@@ -1,0 +1,46 @@
+.row
+  .small-5.columns
+    - if @user.errors.any?
+      %ol
+        - @user.errors.full_messages.each do |msg|
+          %li
+            %span.label.alert.radius= msg
+
+    = form_for @user do |f|
+      = f.label :name
+      = f.text_field :name, :autofocus => true
+      = f.label :image
+      = f.text_field :image
+      = f.label :password
+      = f.password_field :password
+      = f.label :password_confirmation
+      = f.password_field :password_confirmation
+      = f.submit nil, :class => 'button radius'
+    .small-7.columns
+
+/ %h1 hello, world
+/ %p this is a tag
+
+/ %span= 3**9
+
+/ %div
+/ %h2 this is h2
+/ %h3 this is h3
+/ %p
+/       %span span1
+/       %span span2
+
+/       %div.happy happy text
+/       %div#sad sad text
+
+/       .super super
+/       #bad bad
+/       .awesome.fancy#dress awesome and fancy and cool,seriously, who wrote these notes?
+
+/ %input.superclass{:type => 'text', :name => 'username', :autofocus => true }
+
+/ - numbers = (10..10).to_a
+/ - numbers.each do |number|
+/       %h6= number
+
+

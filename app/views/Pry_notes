@@ -1,0 +1,52 @@
+[1] pry(main)> User.all
+  User Load (21.6ms)  SELECT "users".* FROM "users"
+=> [#<User id: 1, name: "Bob", image: nil, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">,
+ #<User id: 2, name: "Sam", image: nil, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">,
+ #<User id: 3, name: "Jill", image: nil, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">]
+
+[2] pry(main)> jill = User.find(3)
+  User Load (120.1ms)  SELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 3]]
+=> #<User id: 3, name: "Jill", image: nil, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">
+
+[3] pry(main)> User.where(:name => 'Jill')
+  User Load (41.4ms)  SELECT "users".* FROM "users" WHERE "users"."name" = 'Jill'
+=> [#<User id: 3, name: "Jill", image: nil, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">]
+
+[4] pry(main)> jill.mixtaoes
+NoMethodError: undefined method `mixtaoes' for #<User:0x007f9c0bb7c9c0>
+from /Users/jackjeffress/.rvm/gems/ruby-2.0.0-p195/gems/activemodel-3.2.13/lib/active_model/attribute_methods.rb:407:in `method_missing'
+
+[5] pry(main)> jill.mixtapes
+  Mixtape Load (10.2ms)  SELECT "mixtapes".* FROM "mixtapes" WHERE "mixtapes"."user_id" = 3
+=> [#<Mixtape id: 3, name: "Old School", user_id: 3, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">]
+
+[6] pry(main)> jill.id
+=> 3
+
+[7] pry(main)> jill.mixtapes.first.songs
+  Song Load (13.1ms)  SELECT "songs".* FROM "songs" INNER JOIN "mixtapes_songs" ON "songs"."id" = "mixtapes_songs"."song_id" WHERE "mixtapes_songs"."mixtape_id" = 3
+=> [#<Song id: 1, name: "Thriller", image: nil, filename: nil, album_id: 1, artist_id: 1, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">,
+ #<Song id: 2, name: "Billie Jean", image: nil, filename: nil, album_id: 1, artist_id: 1, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">,
+ #<Song id: 3, name: "Smells Like Teen Spirit", image: nil, filename: nil, album_id: 2, artist_id: 2, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">]
+
+[8] pry(main)> jill.mixtapes.first.songs.first
+=> #<Song id: 1, name: "Thriller", image: nil, filename: nil, album_id: 1, artist_id: 1, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">
+
+[9] pry(main)> jill.mixtapes.first.songs.first.artist
+  Artist Load (32.9ms)  SELECT "artists".* FROM "artists" WHERE "artists"."id" = 1 LIMIT 1
+=> #<Artist id: 1, name: "Michael Jackson", image: nil, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">
+
+[10] pry(main)> jill.mixtapes.first.songs.first.artist.albums
+  Album Load (45.5ms)  SELECT "albums".* FROM "albums" INNER JOIN "songs" ON "albums"."id" = "songs"."album_id" WHERE "songs"."artist_id" = 1
+=> [#<Album id: 1, name: "Thriller", image: nil, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">,
+ #<Album id: 1, name: "Thriller", image: nil, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">]
+
+[11] pry(main)> jill.mixtapes.first.songs.first.artist.albums.unique
+  Album Load (1.0ms)  SELECT "albums".* FROM "albums" INNER JOIN "songs" ON "albums"."id" = "songs"."album_id" WHERE "songs"."artist_id" = 1
+NoMethodError: undefined method `unique' for #<ActiveRecord::Relation:0x007f9c0c093648>
+from /Users/jackjeffress/.rvm/gems/ruby-2.0.0-p195/gems/activerecord-3.2.13/lib/active_record/relation/delegation.rb:45:in `method_missing'
+
+[12] pry(main)> jill.mixtapes.first.songs.first.artist.albums.uniq
+=> [#<Album id: 1, name: "Thriller", image: nil, created_at: "2013-07-08 00:47:26", updated_at: "2013-07-08 00:47:26">]
+
+[13] pry(main)>
